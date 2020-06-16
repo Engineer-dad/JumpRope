@@ -83,6 +83,8 @@ void setup() {
     //pinMode(LED_PIN, OUTPUT);
 
     BtSerial.begin(9600);
+
+    BtSerial.write((char)0x00);
     
 }
 
@@ -106,10 +108,11 @@ void loop() {
 
     if( max_ac <= ac_sum ){
        max_ac = ac_sum;
-       if( (max_ac - min_ac) > 200 && jump_cnt_flg == 0 ) {
+       if( (max_ac - min_ac) > 400 && jump_cnt_flg == 0 ) {
           jump_cnt++;
           jump_cnt_flg = 1;
           min_ac = ac_sum;
+          BtSerial.write((char)jump_cnt);
        }     
     }
     if( min_ac > ac_sum ){
@@ -121,10 +124,10 @@ void loop() {
  
  
 
-    //Serial.print(ac_sum);Serial.print("\t");
-    //Serial.println(jump_cnt);
+    Serial.print(ac_sum);Serial.print("\t");
+    Serial.println(jump_cnt);
 
-    
+   // BtSerial.write("5");
     // blink LED to indicate activity
     //blinkState = !blinkState;
     //digitalWrite(LED_PIN, blinkState);
